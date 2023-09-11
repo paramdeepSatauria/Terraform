@@ -1,0 +1,3 @@
+curl -s -H "X-Auth-Token: gAAAAABk-HNJghZJtuHKFLloRK3rYbAdHiCcgvNS93nHzVdWavZ2UoQfBOPrS67lPpMteA64s1z_qbaWpI7n570e87aAwyuAw1tZAX45HYRra86EINnhEA6FQH98s7ctXkM5ffxovaZJL-virVx_e941Aux-nxYtGFrcC1wmLrA3n8MUK5bRMik" \
+  http://10.253.17.168/v3/endpoints \
+  | python -m json.tool
