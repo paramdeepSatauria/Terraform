@@ -50,7 +50,6 @@ def updateEndpoint(accessToken, endpoint_id, data):
 
 if __name__ == '__main__':
   accessToken = getAccessToken()
-  # accessToken = 'gAAAAABk-JErIEiei5L06z5GhnhXMSD-lZ9u5dly8h63llLJXUaa--ZD08wQ2ARuaPUS3ePWBzgh_Iqsm1t74xwKrjVA_pdG4u4fcnC4ZcJ0RN0UCN0HopLxnaVw6Tko0ap0a_C5cF47w7sG0FLL_RutuVulLI5zz3LK3UpGxr8nlvwzsi7JmIg'
   endpoints = getEndpoint(accessToken)
   print(len(endpoints["endpoints"]))
   count = 0
