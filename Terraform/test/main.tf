@@ -82,7 +82,7 @@ resource "openstack_images_image_v2" "test-image" {
 variable "network_info" {
   type = object({
     name                    = string
-    availability_zone_hints = string
+    availability_zone_hints = list(string)
     external                = bool
     shared                  = bool
     admin_state_up          = bool 
@@ -104,7 +104,7 @@ variable "subnet_info" {
     cidr            = string
     ip_version      = number
     gateway_ip      = string
-    dns_nameservers = string
+    dns_nameservers = list(string)
     allocation_pool = object({
       start = string
       end   = string
@@ -119,7 +119,7 @@ resource "openstack_networking_subnet_v2" "test-subnet" {
   ip_version      = var.subnet_info.ip_version
   gateway_ip      = var.subnet_info.gateway_ip
   dns_nameservers = var.subnet_info.dns_nameservers
-  allocation_pool = {
+  allocation_pool {
     start = var.subnet_info.allocation_pool.start
     end   = var.subnet_info.allocation_pool.end
   }
@@ -160,7 +160,7 @@ resource "openstack_compute_instance_v2" "test-instance" {
   }
 }
 
-resource "openstack_compute_volume_attach_v2" "attached" {
+resource "openstack_compute_volume_attach_v2" "test-attached" {
   instance_id = openstack_compute_instance_v2.test-instance.id
   volume_id   = openstack_blockstorage_volume_v2.test-volume.id
 }
