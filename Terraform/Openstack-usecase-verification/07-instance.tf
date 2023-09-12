@@ -4,7 +4,7 @@ resource "openstack_compute_instance_v2" "test-instance" {
   image_id          = "${openstack_images_image_v2.test-image.id}"
   flavor_id         = "${openstack_compute_flavor_v2.test-flavor.id}"
   availability_zone = "${openstack_compute_aggregate_v2.test-aggregate.name}"
-  security_groups   = ["default"]
+  security_groups   = ["${openstack_networking_secgroup_v2.test-secgroup.name}"]
   network {
     name = "${openstack_networking_network_v2.test-network.name}"
   }
@@ -15,5 +15,6 @@ resource "openstack_compute_instance_v2" "test-instance" {
   openstack_compute_aggregate_v2.test-aggregate, 
   openstack_images_image_v2.test-image, 
   openstack_networking_network_v2.test-network,
-  openstack_blockstorage_volume_v2.test-volume]
+  openstack_blockstorage_volume_v2.test-volume,
+  openstack_networking_secgroup_v2.test-secgroup]
 }

@@ -73,3 +73,26 @@ variable "flavor_info" {
     disk = string
   })
 }
+
+variable "secgroup_info" {
+  type = object({
+    name = string
+    description = string
+    rule1 = object({
+      direction         = string
+      ethertype         = string
+      protocol          = string
+      port_range_min    = number
+      port_range_max    = number
+      remote_ip_prefix  = string
+    })
+    rule2 = object({
+      direction         = string
+      ethertype         = string
+      protocol          = string
+      port_range_min    = number
+      port_range_max    = number
+      remote_ip_prefix  = string
+    })
+  })
+}
