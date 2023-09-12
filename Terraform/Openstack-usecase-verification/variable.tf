@@ -90,8 +90,6 @@ variable "secgroup_info" {
       direction         = string
       ethertype         = string
       protocol          = string
-      port_range_min    = number
-      port_range_max    = number
       remote_ip_prefix  = string
     })
   })
