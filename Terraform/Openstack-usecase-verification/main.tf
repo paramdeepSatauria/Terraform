@@ -38,7 +38,7 @@ variable "aggregate_info" {
   })
 }
 
-resource "openstack_compute_aggregate_v2" "test-servers" {
+resource "openstack_compute_aggregate_v2" "test-aggregate" {
   name   = var.aggregate_info.name
   zone   = var.aggregate_info.zone
   hosts  = var.aggregate_info.hosts
@@ -71,7 +71,7 @@ variable "image_info" {
   })
 }
 
-resource "openstack_images_image_v2" "test-cirros" {
+resource "openstack_images_image_v2" "test-image" {
   name             = var.image_info.name
   image_source_url = var.image_info.image_source_url
   container_format = var.image_info.container_format
@@ -123,4 +123,44 @@ resource "openstack_networking_subnet_v2" "test-subnet" {
     start = var.subnet_info.allocation_pool.start
     end   = var.subnet_info.allocation_pool.end
   }
+}
+
+# Creating Volumes
+variable "volume_info" {
+  type = object({
+    name              = string
+    availability_zone = string
+    size              = number
+    description       = string
+  })
+}
+
+resource "openstack_blockstorage_volume_v3" "test-volume" {
+  name              = var.volume_info.name
+  availability_zone = var.volume_info.availability_zone
+  size              = var.volume_info.size
+  description       = var.volume_info.description
+}
+
+# Creating Instance
+variable "instacne_info" {
+  type = object({
+    name              = string
+  })
+}
+
+resource "openstack_compute_instance_v2" "test-instance" {
+  name              = var.instacne_info.name
+  image_id          = openstack_images_image_v2.test-image.id
+  flavor_id         = openstack_compute_flavor_v2.test-flavor.id
+  availability_zone = openstack_compute_aggregate_v2.test-aggregate.name
+  security_groups   = ["default"]
+  network {
+    name = openstack_networking_network_v2.test-network.name
+  }
+}
+
+resource "openstack_compute_volume_attach_v2" "attached" {
+  instance_id = openstack_compute_instance_v2.test-instance.id
+  volume_id   = openstack_blockstorage_volume_v2.test-volume.id
 }
