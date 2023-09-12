@@ -78,19 +78,49 @@ resource "openstack_images_image_v2" "test-cirros" {
   disk_format      = var.image_info.disk_format
 }
 
-#Creating Network
+# Creating Network
+variable "network_info" {
+  type = object({
+    name                    = string
+    availability_zone_hints = string
+    external                = bool
+    shared                  = bool
+    admin_state_up          = bool 
+  })
+}
+
 resource "openstack_networking_network_v2" "test-network" {
-  name           = "provider"
-  admin_state_up = "true"
+  name                    = var.network_info.name
+  availability_zone_hints = var.network_info.availability_zone_hints
+  external                = var.network_info.external
+  shared                  = var.network_info.shared
+  admin_state_up          = var.network_info.admin_state_up
+}
+
+# Creating Subnet
+variable "subnet_info" {
+  type = object({
+    name            = string
+    cidr            = string
+    ip_version      = number
+    gateway_ip      = string
+    dns_nameservers = string
+    allocation_pool = object({
+      start = string
+      end   = string
+    })
+  })
 }
 
 resource "openstack_networking_subnet_v2" "test-subnet" {
-  name       = "provider-sub"
-  network_id = openstack_networking_network_v2.test-network.id
-  cidr       = "10.253.0.0/16"
-  ip_version = 4
+  name            = var.subnet_info.name
+  network_id      = openstack_networking_network_v2.test-network.id
+  cidr            = var.subnet_info.cidr
+  ip_version      = var.subnet_info.ip_version
+  gateway_ip      = var.subnet_info.gateway_ip
+  dns_nameservers = var.subnet_info.dns_nameservers
   allocation_pool = {
-    end = 
-    start = 
+    start = var.subnet_info.allocation_pool.start
+    end   = var.subnet_info.allocation_pool.end
   }
 }
